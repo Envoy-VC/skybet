@@ -25,9 +25,9 @@ async function main() {
   //
   // Step 1: Prepare everything for Phat Contract.
   //
-  const endpoint = process.env.PHALA_TESTNET_ENDPOINT
+  const endpoint = process.env.PHALA_MAINNET_ENDPOINT || 'wss://api.phala.network/ws'
   if (!endpoint) {
-    throw new Error('Please set PHALA_TESTNET_ENDPOINT via .env file first.')
+    throw new Error('Please set PHALA_MAINNET_ENDPOINT via .env file first.')
   }
   const apiPromise = await ApiPromise.create(options({ provider: new WsProvider(endpoint), noInitWarn: true }))
   const registry = await OnChainRegistry.create(apiPromise)
@@ -49,7 +49,7 @@ async function main() {
   // Step 2: Init the brickProfileFactory instance, which is the account registry for the Phat Bricks dApp.
   //
   const brickProfileFactoryAbi = fs.readFileSync('./abis/brick_profile_factory.json', 'utf8')
-  const brickProfileFactoryContractId = process.env.PHAT_BRICKS_TESTNET_FACTORY_CONTRACT_ID
+  const brickProfileFactoryContractId = process.env.PHAT_BRICKS_MAINNET_FACTORY_CONTRACT_ID || '0xb59bcc4ea352f3d878874d8f496fb093bdf362fa59d6e577c075f41cd7c84924'
   if (!brickProfileFactoryContractId) {
     throw new Error('Please set PHAT_BRICKS_MAINNET_FACTORY_CONTRACT_ID via .env file first.')
   }
@@ -59,12 +59,23 @@ async function main() {
   if (!brickProfileAddressQuery.isOk || !brickProfileAddressQuery.asOk.isOk) {
     throw new Error('Brick Profile Factory not found.')
   }
+  const brickProfileContractId = brickProfileAddressQuery.asOk.asOk.toHex()
+  const contractInfo = await registry.phactory.getContractInfo({ contracts: [brickProfileContractId] })
+  const brickProfileCodeHash = contractInfo.contracts[0].codeHash
+
+  console.log(`Your Brick Profile contract ID: ${brickProfileContractId}`)
+
+  let brickProfileAbi
+  // compatible for previously version.
+  if (brickProfileCodeHash === '0x3b3d35f92494fe60d9f9f6139ea83964dc4bca84d7ac66e985024358c9c62969') {
+    brickProfileAbi = fs.readFileSync('./abis/brick_profile-0.2.0.json', 'utf8')
+  } else {
+    brickProfileAbi = fs.readFileSync('./abis/brick_profile-1.0.1.json', 'utf8')
+  }
 
   //
   // Step 3: Check current user has been registered in the Phat Bricks dApp or not.
   //
-  const brickProfileAbi = fs.readFileSync('./abis/brick_profile.json', 'utf8')
-  const brickProfileContractId = brickProfileAddressQuery.asOk.asOk.toHex()
   const brickProfileContractKey = await registry.getContractKeyOrFail(brickProfileContractId)
   const brickProfile = new PinkContractPromise(apiPromise, registry, brickProfileAbi, brickProfileContractId, brickProfileContractKey)
 
