@@ -13,7 +13,7 @@ const Navbar = () => {
 	const address = useAddress();
 	return (
 		<div className='w-full border-b-2 border-[#383A44] p-6'>
-			<div className='flex flex-row items-center justify-between'>
+			<div className='flex flex-row items-center lg:justify-between justify-end'>
 				<ConfigProvider
 					theme={{
 						token: {
