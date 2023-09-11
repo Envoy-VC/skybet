@@ -26,8 +26,8 @@ const SidebarItem = ({ Icon, label, handleClick }: SidebarItemProps) => {
 		<Button
 			className='flex w-fit flex-row items-center justify-center gap-3  !px-[6px] xl:justify-start'
 			type='text'
-            size='large'
-            block
+			size='large'
+			block
 		>
 			<Icon size={24} />
 			<div className='hidden text-lg xl:flex '>{label}</div>
@@ -59,7 +59,7 @@ const Sidebar = () => {
 		},
 	];
 	return (
-		<div className='min-h-screen w-full max-w-fit border-r-2 border-[#383A44] p-4 py-8 xl:max-w-[16rem]'>
+		<div className='hidden min-h-screen w-full max-w-fit border-r-2 border-[#383A44] p-4 py-8 sm:flex xl:max-w-[16rem]'>
 			<div className='flex flex-col items-center gap-12 lg:items-start'>
 				<Link
 					className='mx-2 flex flex-row items-center gap-2 xl:mx-4'
@@ -70,7 +70,7 @@ const Sidebar = () => {
 						Skybet
 					</span>
 				</Link>
-				<div className='flex flex-col gap-3 w-full'>
+				<div className='flex w-full flex-col gap-3'>
 					{SidebarItems.map((item, index) => (
 						<SidebarItem {...item} key={index} />
 					))}

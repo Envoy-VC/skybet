@@ -1,9 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import { Avatar, ConfigProvider, Input } from 'antd';
 import { ConnectWallet, useAddress } from '@thirdweb-dev/react';
 
 // Icons
 import {
+	PiRainbowCloudBold,
 	PiMagnifyingGlassBold,
 	PiChatTeardropDots,
 	PiBell,
@@ -13,7 +15,14 @@ const Navbar = () => {
 	const address = useAddress();
 	return (
 		<div className='w-full p-6'>
-			<div className='flex flex-row items-center justify-end lg:justify-between'>
+			<div className='flex flex-row items-center justify-between sm:justify-end lg:justify-between'>
+				<Link
+					className='mx-2 flex flex-row items-center gap-2 sm:hidden xl:mx-4'
+					href='/'
+				>
+					<PiRainbowCloudBold className='text-chartGreen' size={36} />
+					<span className='flex w-fit text-2xl font-semibold'>Skybet</span>
+				</Link>
 				<ConfigProvider
 					theme={{
 						token: {
@@ -31,8 +40,12 @@ const Navbar = () => {
 					/>
 				</ConfigProvider>
 				<div className='flex flex-row items-center gap-3'>
-					<PiChatTeardropDots size={24} color='#fff' />
-					<PiBell size={24} color='#fff' />
+					<PiChatTeardropDots
+						size={24}
+						color='#fff'
+						className='hidden xl:flex'
+					/>
+					<PiBell size={24} color='#fff' className='hidden xl:flex' />
 					<ConnectWallet
 						className='!bg-primary !w-fit !p-[10px] !px-4 !text-white'
 						btnTitle='Connect'
