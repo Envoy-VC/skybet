@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BalanceCard, Games, WinsCard } from '@/components/home';
+import { BalanceCard, Games, Transactions, WinsCard } from '@/components/home';
 
 const Home = () => {
 	return (
@@ -21,7 +21,7 @@ const Home = () => {
 						<Games />
 					</div>
 				</div>
-				<div className='w-full basis-1/3'>aa</div>
+				<div className='w-full basis-1/3'><Transactions /></div>
 			</div>
 		</div>
 	);
