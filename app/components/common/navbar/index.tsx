@@ -12,8 +12,8 @@ import {
 const Navbar = () => {
 	const address = useAddress();
 	return (
-		<div className='w-full border-b-2 border-[#383A44] p-6'>
-			<div className='flex flex-row items-center lg:justify-between justify-end'>
+		<div className='w-full p-6'>
+			<div className='flex flex-row items-center justify-end lg:justify-between'>
 				<ConfigProvider
 					theme={{
 						token: {
@@ -37,8 +37,8 @@ const Navbar = () => {
 						className='!bg-primary !w-fit !p-[10px] !px-4 !text-white'
 						btnTitle='Connect'
 						detailsBtn={() => (
-							<div className='flex flex-row items-center cursor-pointer'>
-								<div className='rounded-l-xl bg-[#1D1D26] px-3 py-2 text-sm text-[#69697C] font-medium'>
+							<div className='flex cursor-pointer flex-row items-center'>
+								<div className='rounded-l-xl bg-[#1D1D26] px-3 py-2 text-sm font-medium text-[#69697C]'>
 									{(address || '').slice(0, 4) +
 										'...' +
 										(address || '').slice(-4)}

@@ -14,6 +14,7 @@ const config: Config = {
 				textSecondary: '#9C9CB4',
 				chartGreen: '#79F785',
 				chartBlue: '#3C9DFF',
+				chartRed: '#F16261',
 			},
 		},
 	},
