@@ -29,7 +29,7 @@ const Layout = ({ children }: Props) => {
 					<SEO />
 					<div className={`flex flex-row ${inter.className}`}>
 						<Sidebar />
-						<div className='flex flex-col'>
+						<div className='flex flex-col w-full'>
 							<Navbar />
 							{children}
 						</div>

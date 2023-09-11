@@ -58,7 +58,7 @@ const Sidebar = () => {
 		},
 	];
 	return (
-		<div className='min-h-screen w-full max-w-fit p-4 py-8 xl:max-w-[16rem]'>
+		<div className='min-h-screen w-full max-w-fit border-r-2 border-[#383A44] p-4 py-8 xl:max-w-[16rem]'>
 			<div className='flex flex-col gap-12'>
 				<Link className='mx-4 flex flex-row items-center gap-2' href='/'>
 					<PiRainbowCloudBold className='text-chartGreen' size={36} />
