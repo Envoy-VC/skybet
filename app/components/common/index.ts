@@ -1,3 +1,5 @@
 import SEO from './seo';
+import Navbar from './navbar';
+import Sidebar from './sidebar';
 
-export { SEO };
+export { SEO, Navbar, Sidebar };
