@@ -24,12 +24,13 @@ interface SidebarItemProps {
 const SidebarItem = ({ Icon, label, handleClick }: SidebarItemProps) => {
 	return (
 		<Button
-			className='flex w-fit flex-row items-center justify-start gap-3'
+			className='flex w-fit flex-row items-center justify-center gap-3  !px-[6px] xl:justify-start'
 			type='text'
-			size='large'
+            size='large'
+            block
 		>
-			<Icon className='' size={24} />
-			<div className='hidden text-lg xl:flex'>{label}</div>
+			<Icon size={24} />
+			<div className='hidden text-lg xl:flex '>{label}</div>
 		</Button>
 	);
 };
@@ -59,14 +60,17 @@ const Sidebar = () => {
 	];
 	return (
 		<div className='min-h-screen w-full max-w-fit border-r-2 border-[#383A44] p-4 py-8 xl:max-w-[16rem]'>
-			<div className='flex flex-col gap-12'>
-				<Link className='mx-4 flex flex-row items-center gap-2' href='/'>
+			<div className='flex flex-col items-center gap-12 lg:items-start'>
+				<Link
+					className='mx-2 flex flex-row items-center gap-2 xl:mx-4'
+					href='/'
+				>
 					<PiRainbowCloudBold className='text-chartGreen' size={36} />
 					<span className='hidden w-fit text-2xl font-semibold xl:flex'>
 						Skybet
 					</span>
 				</Link>
-				<div className='flex flex-col gap-3'>
+				<div className='flex flex-col gap-3 w-full'>
 					{SidebarItems.map((item, index) => (
 						<SidebarItem {...item} key={index} />
 					))}
