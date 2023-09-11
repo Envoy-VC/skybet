@@ -60,7 +60,7 @@ function fetchTokenPrice(
 		'User-Agent': 'skybet-phat-contract',
 	};
 
-	let url = `${API_URL}/coins/${symbol}/market_chart/range?vs_currency=usd&from=1693820774&to=1694252795&precision=18`;
+	let url = `${API_URL}/coins/${symbol}/market_chart/range?vs_currency=usd&from=${startAt.toString()}&to=${endAt.toString()}&precision=18`;
 
 	let response = pink.batchHttpRequest(
 		[
@@ -121,11 +121,9 @@ export default function main(request: HexString, settings: string): HexString {
 			symbol
 		);
 		let startValue = Math.round(respData.prices[0][1] * 10 ** 8);
-		console.log(startValue);
 		let endValue = Math.round(
 			respData.prices[respData.prices.length - 1][1] * 10 ** 8
 		);
-		console.log(endValue);
 		let reply = encodeReply([TYPE_RESPONSE, requestId, startValue, endValue]);
 		return reply;
 	} catch (error) {
