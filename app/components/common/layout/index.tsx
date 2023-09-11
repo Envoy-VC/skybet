@@ -18,6 +18,9 @@ const Layout = ({ children }: Props) => {
 		<ConfigProvider
 			theme={{
 				algorithm: theme.darkAlgorithm,
+				token: {
+					colorPrimary: '#6C61D0',
+				},
 			}}
 		>
 			<ThirdwebProvider
@@ -29,7 +32,7 @@ const Layout = ({ children }: Props) => {
 					<SEO />
 					<div className={`flex flex-row ${inter.className}`}>
 						<Sidebar />
-						<div className='flex flex-col w-full'>
+						<div className='flex w-full flex-col'>
 							<Navbar />
 							{children}
 						</div>

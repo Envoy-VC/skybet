@@ -43,7 +43,7 @@ const CandlestickChart = () => {
 	};
 
 	return (
-		<div className='rounded-xl'>
+		<div className='rounded-xl bg-[#1D1D26] p-8 py-6'>
 			<ApexCharts
 				type='candlestick'
 				height={500}
