@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { HardhatUserConfig } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
-require('@nomicfoundation/hardhat-chai-matchers');
 import { ProxyAgent, setGlobalDispatcher } from 'undici';
 
 if (process.env.http_proxy || process.env.https_proxy) {
@@ -15,7 +14,6 @@ const DEPLOYER_PRIVATE_KEY =
 	process.env.DEPLOYER_PRIVATE_KEY ??
 	'0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
-// Get a free POLYGONSCAN_API_KEY at https://polygonscan.com.
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || '';
 
 const config: HardhatUserConfig = {

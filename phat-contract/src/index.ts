@@ -8,6 +8,7 @@ const uintCoder = new Coders.NumberCoder(32, false, 'uint256');
 const bytesCoder = new Coders.BytesCoder('bytes');
 
 // Reply is in format of [ResponseType, requestId, Price at Start Timestamp, Price at End Timestamp]
+// Example [1,1,168547554412,172844789632]
 function encodeReply(reply: [number, number, number, number]): HexString {
 	return Coders.encode(
 		[uintCoder, uintCoder, uintCoder, uintCoder],

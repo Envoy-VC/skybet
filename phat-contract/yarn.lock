@@ -685,14 +685,14 @@
     deep-eql "^4.0.1"
     ordinal "^1.0.3"
 
-"@nomicfoundation/hardhat-network-helpers@^1.0.0":
+"@nomicfoundation/hardhat-network-helpers@^1.0.0", "@nomicfoundation/hardhat-network-helpers@^1.0.9":
   version "1.0.9"
   resolved "https://registry.npmjs.org/@nomicfoundation/hardhat-network-helpers/-/hardhat-network-helpers-1.0.9.tgz"
   integrity sha512-OXWCv0cHpwLUO2u7bFxBna6dQtCC2Gg/aN/KtJLO7gmuuA28vgmVKYFRCDUqrbjujzgfwQ2aKyZ9Y3vSmDqS7Q==
   dependencies:
     ethereumjs-util "^7.1.4"
 
-"@nomicfoundation/hardhat-toolbox@^2.0.2":
+"@nomicfoundation/hardhat-toolbox@^2.0.0":
   version "2.0.2"
   resolved "https://registry.npmjs.org/@nomicfoundation/hardhat-toolbox/-/hardhat-toolbox-2.0.2.tgz"
   integrity sha512-vnN1AzxbvpSx9pfdRHbUzTRIXpMLPXnUlkW855VaDk6N1pwRaQ2gNzEmFAABk4lWf11E00PKwFd/q27HuwYrYg==
@@ -796,10 +796,10 @@
     tslib "2.4.0"
     ws "8.5.0"
 
-"@phala/fn@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@phala/fn/-/fn-0.1.2.tgz"
-  integrity sha512-4/4n7N4eXPvL3xK+XoLbq3N8EIMsKzJu1N5u88SKK3Uf21PgFA5iy07SY7/atGrJvi5K/0rtpwLX/Mp5WQ7rxQ==
+"@phala/fn@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.npmjs.org/@phala/fn/-/fn-0.1.4.tgz"
+  integrity sha512-3iPDv+khV6RvN7AHbg0S4LH/ufQOTECUKQsVEDsGsBHZOop/iJxBCqSkMr7Ey59GtcDE5qrDMOfXqJ3xnFD2lA==
   dependencies:
     "@oclif/core" "^2"
     "@polkadot/util-crypto" "^12.4.2"
@@ -814,9 +814,9 @@
     ts-loader "^9.4.4"
     ts-node "^10.9.1"
     typescript "^5.2.2"
+    upath "^2.0.1"
     webpack "^5.88.2"
     webpack-merge "^5.9.0"
-    webpack-node-externals "^3.0.0"
     webpack-virtual-modules "^0.5.0"
 
 "@phala/pink-env@^1.0.10":
@@ -824,10 +824,10 @@
   resolved "https://registry.npmjs.org/@phala/pink-env/-/pink-env-1.0.10.tgz"
   integrity sha512-3AfsyC3JncTMCfNbXZYEn6LRDs5wAABTb17KH72+/s3mg4EG3iY7layxiTRsTqauuq+eQ1RcBrXLgUBdp/Mcgg==
 
-"@phala/sdk@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.npmjs.org/@phala/sdk/-/sdk-0.5.1.tgz"
-  integrity sha512-whkyA72tqcCwJPdZ+6/zedg3rg84RwvUhmVjQMwPKOeTCfkzmF/dQl3V+2z017AYOTSZQTfJw8uk6IpfoTmZjQ==
+"@phala/sdk@^0.5.2-nightly-20230909-1":
+  version "0.5.2-nightly-20230909-1"
+  resolved "https://registry.npmjs.org/@phala/sdk/-/sdk-0.5.2-nightly-20230909-1.tgz"
+  integrity sha512-zcP8KLJWdMf2CSwCY0X6borUvk/J0hbb0VzbRhv22RZEOEe1L0qQDdaDxN7+8dmtrfCe3xvZ8SPxK9y47jOAmQ==
   dependencies:
     "@phala/typedefs" "^0.2.33"
     "@polkadot/api" "^10.9.1"
@@ -5038,20 +5038,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.1.2.tgz"
   integrity sha512-ESF23V4SKG6lVSGZgYNpbsiaAkdab6ZgOxe52p7+Kid3W3u3bxR4Vfd/o21dmN7jSt0IwgZ4v5MUd26FEtXE9w==
 
-prettier-plugin-tailwindcss@^0.5.4:
-  version "0.5.4"
-  resolved "https://registry.npmjs.org/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.5.4.tgz"
-  integrity sha512-QZzzB1bID6qPsKHTeA9qPo1APmmxfFrA5DD3LQ+vbTmAnY40eJI7t9Q1ocqel2EKMWNPLJqdTDWZj1hKYgqSgg==
-
 prettier@^2.3.1:
-  version "2.8.8"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.8.8.tgz"
-  integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
-
-prettier@^3.0, prettier@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-3.0.3.tgz"
-  integrity sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==
+  version "2.7.1"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-2.7.1.tgz"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -6172,6 +6162,11 @@ unpipe@1.0.0:
   resolved "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz"
   integrity sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==
 
+upath@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/upath/-/upath-2.0.1.tgz"
+  integrity sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==
+
 update-browserslist-db@^1.0.11:
   version "1.0.11"
   resolved "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.0.11.tgz"
@@ -6281,11 +6276,6 @@ webpack-merge@^5.9.0:
   dependencies:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
-
-webpack-node-externals@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/webpack-node-externals/-/webpack-node-externals-3.0.0.tgz"
-  integrity sha512-LnL6Z3GGDPht/AigwRh2dvL9PQPFQ8skEpVrWZXLWBYmqcaojHNN0onvHzie6rq7EWKrrBfPYqNEzTJgiwEQDQ==
 
 webpack-sources@^3.2.3:
   version "3.2.3"

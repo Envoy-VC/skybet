@@ -1,21 +1,35 @@
 import { ethers } from 'hardhat';
 import 'dotenv/config';
+import dedent from 'dedent';
 
 async function main() {
+	const SkybetTokenContract = await ethers.getContractFactory('SkybetToken');
 	const SkybetContract = await ethers.getContractFactory('Skybet');
 
 	const [deployer] = await ethers.getSigners();
 
-	console.log('Deploying...');
-	const attestor =
-		process.env['MUMBAI_LENSAPI_ORACLE_ENDPOINT'] || deployer.address; // When deploy for real e2e test, change it to the real attestor wallet.
-	const consumer = await SkybetContract.deploy(attestor, deployer.address);
-	await consumer.deployed();
-	console.log('Deployed', {
-		consumer: consumer.address,
-	});
+	console.log('Deploying Skybet Token...');
+	const token = await SkybetTokenContract.deploy();
+	await token.deployed();
+	console.log(`Skybet Token deployed to: ${token.address}`);
+
+	console.log('Deploying Skybet...');
+	const skybet = await SkybetContract.deploy(token.address);
+	await skybet.deployed();
+	console.log(`Skybet deployed to: ${skybet.address}`);
+
+	const finalMessage = dedent`
+    🎉 Your Skybet  Contract has been deployed, check it out here: https://mumbai.polygonscan.com/address/${skybet.address}
+    
+    You also need to set up the consumer contract address in your .env file:
+    
+    MUMBAI_CONSUMER_CONTRACT_ADDRESS=${skybet.address}
+  `;
+	console.log(`\n${finalMessage}\n`);
 }
 
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
 main().catch((error) => {
 	console.error(error);
 	process.exitCode = 1;

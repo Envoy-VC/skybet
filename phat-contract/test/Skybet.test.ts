@@ -38,9 +38,10 @@ describe('Skybet Contract', async function () {
 
 		const SkybetTokenInstance = await SkybetToken.connect(deployer).deploy();
 		const SkybetInstance = await Skybet.connect(deployer).deploy(
-			SkybetTokenInstance.address,
-			deployer.address
+			SkybetTokenInstance.address
 		);
+
+		await SkybetInstance.setAttestor(deployer.address);
 
 		return { SkybetTokenInstance, SkybetInstance, deployer, user1, user2 };
 	}
@@ -68,7 +69,7 @@ describe('Skybet Contract', async function () {
 
 	it('Should add new Token', async () => {
 		let { SkybetInstance, deployer } = await deploySkybetContracts();
-		SkybetInstance.connect(deployer).addToken('bitcoin');
+		await SkybetInstance.connect(deployer).addToken('bitcoin');
 		expect(await SkybetInstance.Tokens.call([], 1)).to.be.equal('bitcoin');
 	});
 
@@ -258,7 +259,7 @@ describe('Skybet Contract', async function () {
 		);
 
 		// Time forward to end game
-		time.increase(time.duration.hours(2));
+		await time.increase(time.duration.hours(3));
 
 		let tx = await SkybetInstance.connect(deployer).declareResult(0);
 		let receipt = await tx.wait();
@@ -272,6 +273,7 @@ describe('Skybet Contract', async function () {
 		expect(game.resultDeclared).to.be.equal(true);
 		expect(game.result).to.be.equal(0);
 	});
+
 	it('Should withdraw rewards', async () => {
 		let { SkybetTokenInstance, SkybetInstance, deployer, user1, user2 } =
 			await deploySkybetContracts();
@@ -330,7 +332,7 @@ describe('Skybet Contract', async function () {
 		);
 
 		// Time forward to end game
-		time.increase(time.duration.hours(2));
+		await time.increase(time.duration.hours(2));
 
 		let tx = await SkybetInstance.connect(deployer).declareResult(0);
 		let receipt = await tx.wait();
@@ -363,8 +365,8 @@ describe('Skybet Contract', async function () {
 			(await SkybetInstance.BetsforGame(0, user1.address)).totalTokensStaked
 		).to.equal(ethers.utils.parseEther('0'));
 
-		expect(
-			(await SkybetTokenInstance.balanceOf(deployer.address))
-		).to.equal(ethers.utils.parseEther('10000'));
+		expect(await SkybetTokenInstance.balanceOf(deployer.address)).to.equal(
+			ethers.utils.parseEther('10000')
+		);
 	});
 });

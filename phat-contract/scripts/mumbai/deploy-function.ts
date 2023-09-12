@@ -19,19 +19,15 @@ import dedent from 'dedent';
 async function main() {
 	const endpoint =
 		process.env.PHALA_TESTNET_ENDPOINT || 'wss://poc5.phala.network/ws';
-
 	if (!endpoint) {
 		throw new Error('Please set PHALA_TESTNET_ENDPOINT via .env file first.');
 	}
 	const mumbaiRpcUrl = process.env.MUMBAI_RPC_URL;
-
 	if (!mumbaiRpcUrl) {
 		throw new Error('Please set MUMBAI_RPC_URL via .env file first.');
 	}
-
 	const mumbaiConsumerContractAddress =
 		process.env.MUMBAI_CONSUMER_CONTRACT_ADDRESS;
-
 	if (!mumbaiConsumerContractAddress) {
 		throw new Error(
 			'Please set MUMBAI_CONSUMER_CONTRACT_ADDRESS via .env file first.'
@@ -59,22 +55,24 @@ async function main() {
 		pair = keyring.createFromJson(JSON.parse(exported));
 		pair.decodePkcs8(process.env.POLKADOT_WALLET_PASSPHRASE);
 	} else {
-		throw new Error(
-			'You need set a polkadot account to continue, please check README.md for details.'
-		);
-	}
+		console.log(dedent`
+      ❗ You need create Brick Profile before continue.
 
+      You can checkout out guide here: https://github.com/Phala-Network/lensapi-oracle-consumer-contract#create-a-bricks-profile
+
+      Create your Brick Profile here: https://bricks-poc5.phala.network
+    `);
+		return;
+	}
 	const cert = await signCertificate({ pair });
 
 	const brickProfileFactoryAbi = fs.readFileSync(
 		'./abis/brick_profile_factory.json',
 		'utf8'
 	);
-
 	const brickProfileFactoryContractId =
 		process.env.PHAT_BRICKS_TESTNET_FACTORY_CONTRACT_ID ||
 		'0x489bb4fa807bbe0f877ed46be8646867a8d16ec58add141977c4bd19b0237091';
-
 	if (!brickProfileFactoryContractId) {
 		throw new Error(
 			'Please set PHAT_BRICKS_TESTNET_FACTORY_CONTRACT_ID via .env file first.'
@@ -83,7 +81,6 @@ async function main() {
 	const brickProfileFactoryContractKey = await registry.getContractKeyOrFail(
 		brickProfileFactoryContractId
 	);
-
 	const brickProfileFactory = new PinkContractPromise(
 		apiPromise,
 		registry,
@@ -91,16 +88,20 @@ async function main() {
 		brickProfileFactoryContractId,
 		brickProfileFactoryContractKey
 	);
-
 	const { output: brickProfileAddressQuery } =
 		await brickProfileFactory.query.getUserProfileAddress<
 			Result<AccountId, any>
 		>(pair.address, { cert });
-
 	if (!brickProfileAddressQuery.isOk || !brickProfileAddressQuery.asOk.isOk) {
-		throw new Error('Brick Profile Factory not found.');
-	}
+		console.log(dedent`
+      ❗ You need create Brick Profile before continue.
 
+      You can checkout out guide here: https://github.com/Phala-Network/lensapi-oracle-consumer-contract#create-a-bricks-profile
+
+      Create your Brick Profile here: https://bricks-poc5.phala.network
+    `);
+		return;
+	}
 	const brickProfileContractId = brickProfileAddressQuery.asOk.asOk.toHex();
 	const contractInfo = await registry.phactory.getContractInfo({
 		contracts: [brickProfileContractId],
@@ -156,30 +157,25 @@ async function main() {
 			brickProfileContractId // brick_profile
 		),
 		pair
-  );
-  
+	);
 	await result.waitFinalized();
-  const contractPromise = result.contract;
-  
+	const contractPromise = result.contract;
 	console.log(
 		'The ActionOffchainRollup contract has been instantiated: ',
 		contractPromise.address.toHex()
 	);
 
 	const { output: attestorQuery } =
-    await contractPromise.query.getAttestAddress(cert.address, { cert });
-  
+		await contractPromise.query.getAttestAddress(cert.address, { cert });
 	const attestor = attestorQuery.asOk.toHex();
 
 	const selectorUint8Array = rollupAbi.messages
 		.find((i) => i.identifier === 'answer_request')
-    ?.selector.toU8a();
-  
+		?.selector.toU8a();
 	const selector = Buffer.from(selectorUint8Array!).readUIntBE(
 		0,
 		selectorUint8Array!.length
-  );
-  
+	);
 	const actions = [
 		{
 			cmd: 'call',
@@ -236,12 +232,11 @@ async function main() {
 			externalAccountId
 		),
 		pair
-  );
-  
+	);
 	const finalMessage = dedent`
     🎉 Your workflow has been added, you can check it out here: https://bricks-poc5.phala.network/workflows/${brickProfileContractId}/${num}
 
-       You also need set up the attestor to your .env file:
+       You also need to set up the attestor in your .env file:
 
        MUMBAI_LENSAPI_ORACLE_ENDPOINT=${attestor}
 

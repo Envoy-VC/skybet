@@ -93,9 +93,8 @@ contract Skybet is PhatRollupAnchor, Ownable {
 
 	/* ------------------- Constructor ------------------- */
 
-	constructor(address _stakeToken, address _attestorAddress) {
+	constructor(address _stakeToken) {
 		STAKE_TOKEN = IERC20(_stakeToken);
-		_grantRole(PhatRollupAnchor.ATTESTOR_ROLE, _attestorAddress);
 		Tokens[tokenCount] = Token({symbol: 'ethereum'});
 		tokenCount++;
 	}
@@ -389,6 +388,10 @@ contract Skybet is PhatRollupAnchor, Ownable {
 		Tokens[tokenCount] = Token({symbol: _symbol});
 		tokenCount++;
 		emit TokenAdded(_symbol);
+	}
+
+	function setAttestor(address phatAttestor) public onlyOwner {
+		_grantRole(PhatRollupAnchor.ATTESTOR_ROLE, phatAttestor);
 	}
 
 	/* ------------------- Internal Functions ------------------- */

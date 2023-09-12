@@ -10,5 +10,5 @@ Mainnet -
 
 ## Phat function
 
-Po5 - https://bricks-poc5.phala.network/workflows/0xb382ff99de37ee660f835aae151b3d35881af0d075c62e9ce9f48db2d2d7e02a/2
+Po5 - https://bricks-poc5.phala.network/workflows/0xb382ff99de37ee660f835aae151b3d35881af0d075c62e9ce9f48db2d2d7e02a/3
 Mainnet -
