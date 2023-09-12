@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
-import { Ethereum } from '@thirdweb-dev/chains';
+import { Polygon, Mumbai } from '@thirdweb-dev/chains';
 
 import { ConfigProvider, theme } from 'antd';
 
 import { SEO } from '..';
-import { TW_CLIENT_ID } from '@/config';
+import { TW_CLIENT_ID, ENV } from '@/config';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
@@ -23,7 +23,11 @@ const Layout = ({ children }: Props) => {
 				},
 			}}
 		>
-			<ThirdwebProvider activeChain={Ethereum} clientId={TW_CLIENT_ID}>
+			<ThirdwebProvider
+				activeChain={ENV === 'production' ? Polygon : Mumbai}
+				supportedChains={ENV === 'production' ? [Polygon] : [Mumbai]}
+				clientId={TW_CLIENT_ID}
+			>
 				<>
 					<SEO />
 					{children}
