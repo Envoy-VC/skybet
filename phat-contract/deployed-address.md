@@ -1,14 +1,14 @@
 ## Skybet Token
 
-Mumbai - 0x91841bA72Caf99dE333773D71641722AeFca89aa
+Mumbai - 0x8EfA13de749102f48CB43b490E9C794f5381a7c7
 Mainnet -
 
 ## Skybet Game
 
-Mumbai - 0x33926C7da6d2486f9D127CeDa95135bC10C9C852
+Mumbai - 0xfD6A457139AaD16FbaF3ECeb53AeB9B6804A2dCe
 Mainnet -
 
 ## Phat function
 
-Po5 - https://bricks-poc5.phala.network/workflows/0xb382ff99de37ee660f835aae151b3d35881af0d075c62e9ce9f48db2d2d7e02a/3
+Po5 - 
 Mainnet -
