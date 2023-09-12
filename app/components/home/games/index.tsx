@@ -1,6 +1,6 @@
 import React from 'react';
-import { useContract, useContractRead } from '@thirdweb-dev/react';
 import { ConfigProvider, Menu } from 'antd';
+import { useContract, useContractRead } from '@thirdweb-dev/react';
 
 import { SKYBET_ADDRESS } from '@/config';
 
@@ -45,7 +45,6 @@ const Games = () => {
 
 	const { contract } = useContract(SKYBET_ADDRESS);
 	const { data: totalGames } = useContractRead(contract, 'gameCount');
-	console.log(totalGames);
 
 	return (
 		<div className='rounded-xl bg-[#1D1D26] p-4 lg:p-8 lg:py-6'>
@@ -83,11 +82,13 @@ const Games = () => {
 					/>
 				</ConfigProvider>
 				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-					{Array(totalGames ?? 0)
-						.fill(1)
-						.map((_, index) => (
-							<GameCard key={index} />
-						))}
+					{!!totalGames && totalGames?.toString() > 0 && (
+						<>
+							{Array(totalGames?.toString() ?? 0).map((_, index) => (
+								<GameCard key={index} gameId={index} />
+							))}
+						</>
+					)}
 				</div>
 			</div>
 		</div>
