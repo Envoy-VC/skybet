@@ -4,8 +4,8 @@ import { Ethereum } from '@thirdweb-dev/chains';
 
 import { ConfigProvider, theme } from 'antd';
 
-import { Navbar, SEO, Sidebar } from '..';
-import { TW_CLIENT_ID, AppMetadata } from '@/config';
+import { SEO } from '..';
+import { TW_CLIENT_ID } from '@/config';
 
 import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
@@ -23,20 +23,10 @@ const Layout = ({ children }: Props) => {
 				},
 			}}
 		>
-			<ThirdwebProvider
-				activeChain={Ethereum}
-				clientId={TW_CLIENT_ID}
-				dAppMeta={AppMetadata}
-			>
+			<ThirdwebProvider activeChain={Ethereum} clientId={TW_CLIENT_ID}>
 				<>
 					<SEO />
-					<div className={`flex flex-row ${inter.className}`}>
-						<Sidebar />
-						<div className='flex w-full flex-col'>
-							<Navbar />
-							{children}
-						</div>
-					</div>
+					{children}
 				</>
 			</ThirdwebProvider>
 		</ConfigProvider>
