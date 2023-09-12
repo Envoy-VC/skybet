@@ -24,16 +24,16 @@ contract Skybet is PhatRollupAnchor, Ownable {
 	/* ------------------- State Variables ------------------- */
 
 	/// @dev Total number of games created
-	uint256 gameCount;
+	uint256 public gameCount;
 	/// @dev Total number of tokens added for betting
-	uint256 tokenCount;
+	uint256 public tokenCount;
 	/// @dev Request Id for next Phat Contract
-	uint nextRequest = 1;
+	uint public nextRequest = 1;
 
 	/* ------------------- Mappings ------------------- */
 
 	/// @dev Mapping of Request Id =>  Request Struct => Game Id
-	mapping(uint => Request) requests;
+	mapping(uint => Request) public requests;
 	/// @dev Mapping of Game Id => Token Struct => Token Symbol
 	mapping(uint256 => Token) public Tokens;
 	/// @dev Mapping of Game Id => Game Struct

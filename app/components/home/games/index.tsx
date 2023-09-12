@@ -1,5 +1,8 @@
 import React from 'react';
+import { useContract, useContractRead } from '@thirdweb-dev/react';
 import { ConfigProvider, Menu } from 'antd';
+
+import { SKYBET_ADDRESS } from '@/config';
 
 // Components
 import GameCard from '../game-card';
@@ -40,6 +43,10 @@ const Games = () => {
 		setActiveMenuItem(e.key as MenuItemType);
 	};
 
+	const { contract } = useContract(SKYBET_ADDRESS);
+	const { data: totalGames } = useContractRead(contract, 'gameCount');
+	console.log(totalGames);
+
 	return (
 		<div className='rounded-xl bg-[#1D1D26] p-4 lg:p-8 lg:py-6'>
 			<div className='flex flex-col gap-4'>
@@ -76,7 +83,7 @@ const Games = () => {
 					/>
 				</ConfigProvider>
 				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-					{Array(6)
+					{Array(totalGames ?? 0)
 						.fill(1)
 						.map((_, index) => (
 							<GameCard key={index} />
