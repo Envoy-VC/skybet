@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spin } from 'antd';
 import { useContract, useContractRead, useAddress } from '@thirdweb-dev/react';
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
@@ -13,6 +14,7 @@ import {
 } from '@/components/game';
 
 // Icons
+import { LoadingOutlined } from '@ant-design/icons';
 import {
 	PiChartLine,
 	PiCoins,
@@ -35,7 +37,15 @@ const Game = ({ id }: GameProps) => {
 	);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return (
+			<div className='flex w-full justify-center p-4'>
+				<Spin
+					indicator={
+						<LoadingOutlined style={{ fontSize: 36, color: '#fff' }} spin />
+					}
+				/>
+			</div>
+		);
 	} else if (
 		!isLoading &&
 		!!game &&

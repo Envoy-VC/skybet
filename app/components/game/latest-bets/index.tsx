@@ -1,13 +1,10 @@
 import React from 'react';
-import { Table, ConfigProvider } from 'antd';
-import {
-	useContract,
-	useContractEvents,
-	useContractRead,
-} from '@thirdweb-dev/react';
+import { Table, ConfigProvider, Spin } from 'antd';
+import { useContract, useContractEvents } from '@thirdweb-dev/react';
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
-import { BetType } from '../place-bet/index';
+// Icons
+import { LoadingOutlined } from '@ant-design/icons';
 
 const { Column } = Table;
 
@@ -30,7 +27,13 @@ const LatestBetsTable = ({ gameId }: Props) => {
 		<div className='flex flex-col gap-4'>
 			<span className='text-xl font-medium'>Latest Bets</span>
 			{isLoading ? (
-				<div>Loading...</div>
+				<div className='p-4'>
+					<Spin
+						indicator={
+							<LoadingOutlined style={{ fontSize: 24, color: '#fff' }} spin />
+						}
+					/>
+				</div>
 			) : (
 				<ConfigProvider
 					theme={{

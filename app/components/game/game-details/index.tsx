@@ -1,8 +1,12 @@
 import React from 'react';
-import { Button } from 'antd';
-import { TokenImage } from '@/components/common';
+import { Button, Spin } from 'antd';
 import { useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
+
+import { TokenImage } from '@/components/common';
+
+// Icons
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface Props {
 	gameId: number;
@@ -27,7 +31,7 @@ const GameDetails = ({
 }: Props) => {
 	const address = useAddress();
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
-	const { mutateAsync: declareResult } = useContractWrite(
+	const { mutateAsync: declareResult, isLoading } = useContractWrite(
 		contract,
 		'declareResult'
 	);
@@ -81,8 +85,22 @@ const GameDetails = ({
 					className='bg-primary text-xl text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
 					size='large'
 					onClick={declare}
+					disabled={isLoading}
 				>
-					Declare Result
+					{isLoading ? (
+						<div className='flex flex-row items-center justify-center gap-2'>
+							<Spin
+								indicator={
+									<LoadingOutlined
+										style={{ fontSize: 20, color: '#fff' }}
+										spin
+									/>
+								}
+							/>
+						</div>
+					) : (
+						'Declare Result'
+					)}
 				</Button>
 			)}
 		</div>

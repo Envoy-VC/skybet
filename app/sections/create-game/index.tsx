@@ -1,11 +1,15 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+import { Button, Spin } from 'antd';
 
 import { useContract, useContractWrite } from '@thirdweb-dev/react';
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 import TokenDropdown from '@/components/common/custom-date/token-dropdown';
 import { CustomInput, CustomDate } from '@/components/common';
-import { Button } from 'antd';
+
+// Icons
+import { LoadingOutlined } from '@ant-design/icons';
 
 export interface CreateGameFormProps {
 	operatorAddress: string;
@@ -17,8 +21,12 @@ export interface CreateGameFormProps {
 }
 
 const CreateGame = () => {
+	const router = useRouter();
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
-	const { mutateAsync: createGame } = useContractWrite(contract, 'createGame');
+	const { mutateAsync: createGame, isLoading } = useContractWrite(
+		contract,
+		'createGame'
+	);
 	const [createForm, setCreateForm] = React.useState<CreateGameFormProps>({
 		operatorAddress: '',
 		startAt: 0,
@@ -64,6 +72,16 @@ const CreateGame = () => {
 			});
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setCreateForm({
+				operatorAddress: '',
+				startAt: 0,
+				endAt: 0,
+				stakingStartAt: 0,
+				stakingEndAt: 0,
+				token: 0,
+			});
+			router.push('/');
 		}
 	};
 
@@ -146,8 +164,22 @@ const CreateGame = () => {
 					size='large'
 					className='my-8 max-w-xs bg-primary font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
 					onClick={create}
+					disabled={isLoading}
 				>
-					Create
+					{isLoading ? (
+						<div className='flex flex-row items-center justify-center gap-2'>
+							<Spin
+								indicator={
+									<LoadingOutlined
+										style={{ fontSize: 20, color: '#fff' }}
+										spin
+									/>
+								}
+							/>
+						</div>
+					) : (
+						'Create'
+					)}
 				</Button>
 			</div>
 		</div>

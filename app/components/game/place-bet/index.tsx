@@ -1,7 +1,8 @@
 import React from 'react';
 import { CustomInput } from '@/components/common';
-import { Button, Select, ConfigProvider } from 'antd';
+import { Button, Select, ConfigProvider, Spin } from 'antd';
 
+import { ethers } from 'ethers';
 import {
 	useAddress,
 	useBalance,
@@ -13,7 +14,7 @@ import { TOKEN_ADDRESS, TOKEN_ABI, SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Icons
 import { PiAirplaneDuotone } from 'react-icons/pi';
-import { ethers } from 'ethers';
+import { LoadingOutlined } from '@ant-design/icons';
 
 // Types
 export type BetType = 'rise' | 'drop';
@@ -33,8 +34,12 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 		address!,
 		SKYBET_ADDRESS,
 	]);
-	const { mutateAsync: approve } = useContractWrite(tokenContract, 'approve');
-	const { mutateAsync: place } = useContractWrite(skybetContract, 'addStake');
+	const { mutateAsync: approve, isLoading: isApproveLoading } =
+		useContractWrite(tokenContract, 'approve');
+	const { mutateAsync: place, isLoading } = useContractWrite(
+		skybetContract,
+		'addStake'
+	);
 
 	const [bet, setBet] = React.useState<string>('0');
 	const [betType, setBetType] = React.useState<BetType>('rise');
@@ -52,7 +57,6 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 			alert('Not Enough Tokens');
 			return;
 		}
-		console.log();
 
 		if (((allowance?.toString() as number) / 10 ** 18)! < parseInt(bet)) {
 			alert('Not Enough Allowance, first add allowance and then place bet');
@@ -78,8 +82,9 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 			});
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setBet('0');
 		}
-		setBet('0');
 	};
 	return (
 		<div className='flex h-full flex-col gap-4 rounded-xl bg-[#1D1D26] p-5 py-6'>
@@ -149,8 +154,19 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 				size='large'
 				className='bg-primary font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
 				onClick={placeBet}
+				disabled={isApproveLoading || isLoading}
 			>
-				Place bet
+				{isApproveLoading || isLoading ? (
+					<div className='flex flex-row items-center justify-center gap-2'>
+						<Spin
+							indicator={
+								<LoadingOutlined style={{ fontSize: 20, color: '#fff' }} spin />
+							}
+						/>
+					</div>
+				) : (
+					'Place bet'
+				)}
 			</Button>
 			<div className='mt-6 rounded-xl bg-[#1a1e2e] p-8 py-6'>
 				<div className='flex flex-col gap-6'>

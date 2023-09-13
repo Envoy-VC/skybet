@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { useContract, useContractWrite } from '@thirdweb-dev/react';
 
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Icons
 import { PiAirplaneDuotone } from 'react-icons/pi';
+import { LoadingOutlined } from '@ant-design/icons';
 
 interface Props {
 	gameId: number;
@@ -31,7 +32,10 @@ const ClaimRewards = ({
 			  (totalTokensUpstaked + totalTokensDownstaked);
 
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
-	const { mutateAsync: claim } = useContractWrite(contract, 'withdrawWinnings');
+	const { mutateAsync: claim, isLoading } = useContractWrite(
+		contract,
+		'withdrawWinnings'
+	);
 
 	const handleClaim = async () => {
 		try {
@@ -64,8 +68,19 @@ const ClaimRewards = ({
 				size='large'
 				className='mx-auto flex w-fit items-center justify-center bg-primary !p-5 !text-xl font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
 				onClick={handleClaim}
+				disabled={isLoading}
 			>
-				Claim
+				{isLoading ? (
+					<div className='flex flex-row items-center justify-center gap-2'>
+						<Spin
+							indicator={
+								<LoadingOutlined style={{ fontSize: 20, color: '#fff' }} spin />
+							}
+						/>
+					</div>
+				) : (
+					'Claim'
+				)}
 			</Button>
 		</div>
 	);
