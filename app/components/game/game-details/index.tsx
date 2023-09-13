@@ -7,17 +7,23 @@ import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 interface Props {
 	gameId: number;
 	totalUpstaked: number;
-    totalDownstaked: number;
-    isEnded: boolean;
+	totalDownstaked: number;
+	isEnded: boolean;
 	operatorAddress: string;
+	endAt: number;
+	stakingStartAt: number;
+	stakingEndAt: number;
 }
 
 const GameDetails = ({
 	gameId,
 	totalUpstaked,
-    totalDownstaked,
-    isEnded,
+	totalDownstaked,
+	isEnded,
 	operatorAddress,
+	endAt,
+	stakingStartAt,
+	stakingEndAt,
 }: Props) => {
 	const address = useAddress();
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
@@ -37,20 +43,35 @@ const GameDetails = ({
 	};
 
 	return (
-		<div className='flex flex-col justify-between gap-4 md:flex-row md:items-center'>
+		<div className='flex flex-col justify-between gap-4 md:flex-row md:items-start'>
 			<div className='flex flex-col gap-4'>
 				<div className='flex flex-row items-center gap-3'>
 					<TokenImage tokenId='ethereum' width={24} />
 					<div className='text-3xl font-medium'>Game #{gameId}</div>
 				</div>
 				<div className='flex flex-col'>
-					<span className='text-lg text-textSecondary'>
-						Total amount upstaked:{' '}
-						<span className='text-chartGreen'>{totalUpstaked}</span>
+					<div className='mb-4 flex flex-row items-center gap-4'>
+						<div className='flex w-fit flex-col justify-start gap-2 rounded-xl bg-[#1D1D26] p-4 pr-8 text-xl text-chartGreen'>
+							<div className='text-sm text-textSecondary'>Upstake</div>
+							{totalUpstaked}
+						</div>
+						<div className='flex w-fit flex-col justify-start gap-2 rounded-xl bg-[#1D1D26] p-4 pr-8 text-xl text-chartRed'>
+							<div className='text-sm text-textSecondary'>Downstake</div>
+							{totalDownstaked}
+						</div>
+					</div>
+
+					<span className=' text-textSecondary'>
+						Staking start at:{' '}
+						<span className='text-primary'>
+							{new Date(stakingStartAt * 1000).toLocaleString()}
+						</span>
 					</span>
-					<span className='text-lg text-textSecondary'>
-						Total amount downstaked:{' '}
-						<span className='text-chartRed'>{totalDownstaked}</span>
+					<span className=' text-textSecondary'>
+						Staking end at:{' '}
+						<span className='text-primary'>
+							{new Date(stakingEndAt * 1000).toLocaleString()}
+						</span>
 					</span>
 				</div>
 			</div>

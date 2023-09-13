@@ -40,7 +40,7 @@ const GameCard = ({ gameId }: Props) => {
 					</span>
 				</div>
 				<span className='text-sm font-medium text-textSecondary'>
-					Ends in {formatTimestamp(game?.endAt?.toString() ?? 0)}
+					{formatTimestamp(game?.endAt?.toString() ?? 0)}
 				</span>
 			</div>
 		);

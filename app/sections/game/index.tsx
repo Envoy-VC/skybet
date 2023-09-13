@@ -48,6 +48,9 @@ const Game = ({ id }: GameProps) => {
 					totalDownstaked={game?.totalAmountDownstaked?.toString() / 10 ** 18}
 					operatorAddress={game?.operator}
 					isEnded={gameEnded}
+					endAt={parseInt(game?.endAt?.toString())}
+					stakingStartAt={parseInt(game?.stakingStartAt?.toString())}
+					stakingEndAt={parseInt(game?.stakingEndAt?.toString())}
 				/>
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>

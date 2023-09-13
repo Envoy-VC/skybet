@@ -44,7 +44,10 @@ const Games = () => {
 	};
 
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
-	const { data: totalGames } = useContractRead(contract, 'gameCount');
+	const { data: totalGames, isLoading } = useContractRead(
+		contract,
+		'gameCount'
+	);
 
 	return (
 		<div className='rounded-xl bg-[#1D1D26] p-4 lg:p-8 lg:py-6'>
@@ -82,11 +85,13 @@ const Games = () => {
 					/>
 				</ConfigProvider>
 				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-					{!!totalGames && totalGames?.toString() > 0 && (
+					{!isLoading && totalGames && (
 						<>
-							{Array(totalGames?.toString() ?? 0).map((_, index) => (
-								<GameCard key={index} gameId={index} />
-							))}
+							{Array(parseInt(totalGames?.toString()))
+								.fill(5)
+								.map((_, index) => (
+									<GameCard key={index} gameId={index} />
+								))}
 						</>
 					)}
 				</div>
