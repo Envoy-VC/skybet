@@ -8,10 +8,17 @@ import {
 	CandlestickChart,
 	PlaceBet,
 	LatestBetsTable,
-	NoResults,
-	BestLost,
 	ClaimRewards,
+	StatusCard,
 } from '@/components/game';
+
+// Icons
+import {
+	PiChartLine,
+	PiCoins,
+	PiHourglassMedium,
+	PiSmileySad,
+} from 'react-icons/pi';
 
 interface GameProps {
 	id: string;
@@ -36,6 +43,11 @@ const Game = ({ id }: GameProps) => {
 	) {
 		return <div>no game found</div>;
 	} else {
+		let gameStarted = Math.round(Date.now() / 1000) > game?.startAt?.toString();
+		let stakingStarted =
+			Math.round(Date.now() / 1000) > game?.stakingStartAt?.toString();
+		let stakingEnded =
+			Math.round(Date.now() / 1000) > game?.stakingEndAt?.toString();
 		let gameEnded = Math.round(Date.now() / 1000) > game?.endAt?.toString();
 		let resultsDeclared = game?.resultDeclared;
 		let won = game?.result === bet?.betType;
@@ -54,16 +66,47 @@ const Game = ({ id }: GameProps) => {
 				/>
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>
-						{!gameEnded && (
+						{!gameStarted && (
+							<StatusCard text='Game has not started yet' Icon={PiChartLine} />
+						)}
+						{gameStarted && !stakingStarted && (
+							<StatusCard text='Staking has not started yet' Icon={PiCoins} />
+						)}
+						{gameStarted && stakingStarted && !stakingEnded && (
 							<PlaceBet
 								gameId={parseInt(id)}
 								BetType={bet?.betType}
 								totalStaked={bet?.totalTokensStaked?.toString() / 10 ** 18}
 							/>
 						)}
-						{gameEnded && !resultsDeclared && <NoResults />}
-						{gameEnded && resultsDeclared && won && <ClaimRewards />}
-						{gameEnded && resultsDeclared && !won && <BestLost />}
+						{gameStarted && stakingEnded && !gameEnded && (
+							<StatusCard text='Staking has ended' Icon={PiCoins} />
+						)}
+						{gameEnded && !resultsDeclared && stakingEnded && (
+							<StatusCard
+								text='Waiting for results to be declared'
+								Icon={PiHourglassMedium}
+							/>
+						)}
+						{gameEnded && resultsDeclared && won && (
+							<ClaimRewards
+								gameId={parseInt(id)}
+								totalTokensStaked={Math.floor(
+									bet?.totalTokensStaked?.toString() / 10 ** 18
+								)}
+								totalTokensUpstaked={Math.floor(
+									game?.totalAmountUpstaked?.toString() / 10 ** 18
+								)}
+								totalTokensDownstaked={Math.floor(
+									game?.totalAmountDownstaked?.toString() / 10 ** 18
+								)}
+								result={game?.result}
+								betType={bet?.betType}
+							/>
+						)}
+						{gameEnded && resultsDeclared && !won && (
+							<StatusCard text='Better luck next time...' Icon={PiSmileySad} />
+						)}
 					</div>
 					<div className='order-1 w-full basis-2/3 lg:order-2'>
 						<CandlestickChart />
