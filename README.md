@@ -2,6 +2,9 @@
 
 Skybet is a cryptocurrency betting game powered by Phala Phat functions. With Skybet, users can create games centered around various cryptocurrencies and specify the game duration. Participants have the opportunity to stake `$SKY` Tokens and place bets on whether the price will rise or fall. At the end of each game, participants are rewarded with SKY Tokens from the pool. Skybet offers an engaging and interactive platform for cryptocurrency enthusiasts to test their predictions and potentially earn rewards.
 
+Testnet App - https://skybet-testnet.vercel.app/
+Mainnet App - https://skybet-mainnet.vercel.app/
+
 ---
 
 ## Features ✨
