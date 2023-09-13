@@ -21,7 +21,9 @@ const Home = () => {
 						<Games />
 					</div>
 				</div>
-				<div className='w-full basis-1/3'><Transactions /></div>
+				<div className='w-full basis-1/3'>
+					<Transactions />
+				</div>
 			</div>
 		</div>
 	);

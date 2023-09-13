@@ -1,11 +1,14 @@
 import React from 'react';
-import { ConfigProvider, Menu } from 'antd';
+import { ConfigProvider, Menu, Spin } from 'antd';
 import { useContract, useContractRead } from '@thirdweb-dev/react';
 
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Components
 import GameCard from '../game-card';
+
+// Icons
+import { LoadingOutlined } from '@ant-design/icons';
 
 // Types
 import type { MenuProps } from 'antd';
@@ -85,7 +88,13 @@ const Games = () => {
 					/>
 				</ConfigProvider>
 				<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-					{!isLoading && totalGames && (
+					{isLoading ? (
+						<div className='mx-auto p-5'>
+							<Spin
+								indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />}
+							/>
+						</div>
+					) : (
 						<>
 							{Array(parseInt(totalGames?.toString()))
 								.fill(5)

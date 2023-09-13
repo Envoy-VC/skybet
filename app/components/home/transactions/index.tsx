@@ -9,6 +9,9 @@ import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 import { TokenImage } from '@/components/common';
 import { TokenImageType } from '@/components/common/token-image';
 
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+
 interface TransactionPillProps {
 	gameId: number;
 	address: string;
@@ -28,7 +31,7 @@ const TransactionPill = ({
 		isLoading,
 		error,
 	} = useContractRead(contract, 'Games', [gameId]);
-	if (isLoading) return <div>loading</div>;
+	if (isLoading) return <div></div>;
 	else
 		return (
 			<div className='flex flex-row items-center justify-between gap-4 rounded-lg border-[1px] border-textSecondary p-3 px-4'>
@@ -65,7 +68,9 @@ const Transactions = () => {
 		<div className='flex h-full flex-col gap-4 rounded-xl bg-[#1D1D26] p-8 py-6'>
 			<span className='mb-4 text-xl font-medium'>Latest Transactions</span>
 			{isLoading ? (
-				<div>loading</div>
+				<div className='mx-auto p-5'>
+					<Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
+				</div>
 			) : (
 				<div className='flex flex-col gap-2'>
 					{events
