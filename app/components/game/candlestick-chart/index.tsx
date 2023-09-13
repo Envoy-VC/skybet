@@ -3,7 +3,52 @@ import dynamic from 'next/dynamic';
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { ApexOptions } from 'apexcharts';
 
-const CandlestickChart = () => {
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
+interface IData {
+	x: Date;
+	y: number[];
+}
+
+interface Props {
+	symbol: string;
+}
+
+const CandlestickChart = ({ symbol }: Props) => {
+	const data = React.useRef<IData[]>([]);
+
+	const socketUrl = `wss://stream.binance.com:9443/ws/${symbol}usdt@kline_1s`;
+
+	const { sendJsonMessage, lastJsonMessage, readyState } =
+		useWebSocket(socketUrl);
+
+	// Connect to ws on component mount
+	React.useEffect(() => {
+		sendJsonMessage({
+			method: 'SUBSCRIBE',
+			params: [`${symbol}usdt@kline_1s`],
+			id: 1,
+		});
+	}, []);
+
+	// Update Array
+	data.current = React.useMemo(() => {
+		let k = (lastJsonMessage as any)?.k;
+		// make sure that all times there are only 50 elements in the array
+		if (data.current.length > 50) {
+			data.current.shift();
+			return data.current.concat({
+				x: new Date(k?.t),
+				y: [k?.o, k?.h, k?.l, k?.c],
+			});
+		} else {
+			return data.current.concat({
+				x: new Date(k?.t),
+				y: [k?.o, k?.h, k?.l, k?.c],
+			});
+		}
+	}, [lastJsonMessage]);
+
 	const options: ApexOptions = {
 		chart: {
 			background: '#1D1D26',
@@ -48,7 +93,7 @@ const CandlestickChart = () => {
 				type='candlestick'
 				height={500}
 				options={options}
-				series={series}
+				series={[{ data: data.current }]}
 			/>
 		</div>
 	);

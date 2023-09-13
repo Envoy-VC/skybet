@@ -62,7 +62,11 @@ const Game = ({ id }: GameProps) => {
 		let resultsDeclared = game?.resultDeclared;
 		let won = game?.result === bet?.betType;
 
-		console.log(game?.token);
+		const getSymbol = (token: string) => {
+			if (token === 'ethereum') return 'eth';
+			else if (token === 'bitcoin') return 'btc';
+			else if (token === 'polkadot') return 'pol';
+		};
 
 		return (
 			<div className='flex flex-col gap-8 p-4 py-8 '>
@@ -122,7 +126,7 @@ const Game = ({ id }: GameProps) => {
 						)}
 					</div>
 					<div className='order-1 w-full basis-2/3 lg:order-2'>
-						<CandlestickChart />
+						<CandlestickChart symbol={getSymbol(game?.token?.at(0))!} />
 					</div>
 				</div>
 				<LatestBetsTable gameId={parseInt(id)} />

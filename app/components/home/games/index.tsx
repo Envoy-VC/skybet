@@ -42,7 +42,6 @@ const Games = () => {
 		React.useState<MenuItemType>('all');
 
 	const onClick: MenuProps['onClick'] = (e) => {
-		console.log('click ', e);
 		setActiveMenuItem(e.key as MenuItemType);
 	};
 
