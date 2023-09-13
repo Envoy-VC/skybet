@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // Icons
 import {
@@ -24,10 +25,10 @@ interface SidebarItemProps {
 const SidebarItem = ({ Icon, label, handleClick }: SidebarItemProps) => {
 	return (
 		<Button
-			className='flex w-fit flex-row items-center justify-center gap-3  !px-[6px] xl:justify-start'
+			className='flex w-fit flex-row items-center justify-center gap-3 !px-[6px] xl:justify-start'
 			type='text'
 			size='large'
-			block
+			onClick={handleClick}
 		>
 			<Icon size={24} />
 			<div className='hidden text-lg xl:flex '>{label}</div>
@@ -36,14 +37,17 @@ const SidebarItem = ({ Icon, label, handleClick }: SidebarItemProps) => {
 };
 
 const Sidebar = () => {
+	const router = useRouter();
 	const SidebarItems: SidebarItemProps[] = [
 		{
 			Icon: PiCirclesFour,
 			label: 'Dashboard',
+			handleClick: () => router.push('/'),
 		},
 		{
 			Icon: PiChartLineUp,
-			label: 'Games',
+			label: 'Create  Game',
+			handleClick: () => router.push('/create'),
 		},
 		{
 			Icon: PiCurrencyCircleDollar,
