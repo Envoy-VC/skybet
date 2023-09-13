@@ -147,11 +147,11 @@ To get started with Skybet smart contracts, follow these steps:
    ```
    # Token Address
    Mumbai - 0xc7449dC99168ACc5B4701a13F14b85d280bD9811
-   Mainnet - 
+   Mainnet - 0x853BDA8D4C5d39A27ee6F580C028cacFbf6ebe49
 
    # Game Address
    Mumbai - 0xB44Ae12e3245A3FbdD9445c536ef568a702e77DF
-   Mainnet -
+   Mainnet - 0x640CCEEf4b6d3B46a208EBc44bd20eE70cAAe9A6
    ```
 
 8. And instances of Skybet Phat Functions deployed on the Phala Network Testnet and Mainnet with the contract address:
