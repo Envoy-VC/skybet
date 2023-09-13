@@ -84,7 +84,7 @@ const Transactions = () => {
 								key={index}
 								gameId={event?.data?.gameId?.toString()}
 								address={event?.data?.user}
-								type={event?.data?.betType?.toString()}
+								type={parseInt(event?.data?.betType?.toString())}
 								value={event?.data?.amount?.toString()}
 							/>
 						))}
