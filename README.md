@@ -98,6 +98,8 @@ This detailed user flow provides a step-by-step overview of the Skybet app, cove
 
 ![Skybet](https://i.ibb.co/dcnGdRR/og.png)
 
+https://youtu.be/jEo37OGORTA
+
 ---
 
 ## Tech Stack 💻
