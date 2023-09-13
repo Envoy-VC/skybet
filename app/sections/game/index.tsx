@@ -57,7 +57,7 @@ const Game = ({ id }: GameProps) => {
 						<CandlestickChart />
 					</div>
 				</div>
-				<LatestBetsTable />
+				<LatestBetsTable gameId={parseInt(id)} />
 			</div>
 		);
 	}

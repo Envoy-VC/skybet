@@ -1,5 +1,12 @@
 import React from 'react';
 import { Table, ConfigProvider } from 'antd';
+import {
+	useContract,
+	useContractEvents,
+	useContractRead,
+} from '@thirdweb-dev/react';
+import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
+
 import { BetType } from '../place-bet/index';
 
 const { Column } = Table;
@@ -7,81 +14,83 @@ const { Column } = Table;
 interface DataType {
 	key: React.Key;
 	address: string;
-	betType: BetType;
+	betType: number;
 	value: number;
-	time: number;
 }
 
-const data: DataType[] = [
-	{
-		key: '1',
-		address: 'John',
-		betType: 'rise',
-		value: 100,
-		time: 15888888888,
-	},
-	{
-		key: '2',
-		address: 'Shaw',
-		betType: 'drop',
-		value: 782,
-		time: 15888888888,
-	},
-	{
-		key: '3',
-		address: 'Vedant',
-		betType: 'rise',
-		value: 4555,
-		time: 15888888888,
-	},
-	{
-		key: '4',
-		address: 'Alex',
-		betType: 'drop',
-		value: 88891,
-		time: 15888888888,
-	},
-];
+interface Props {
+	gameId: number;
+}
 
-const LatestBetsTable = () => {
+const LatestBetsTable = ({ gameId }: Props) => {
+	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
+	const { data: events, isLoading, error } = useContractEvents(contract);
 	return (
 		<div className='flex flex-col gap-4'>
 			<span className='text-xl font-medium'>Latest Bets</span>
-			<ConfigProvider
-				theme={{
-					token: {
-						controlOutline: 'none',
-						colorPrimaryHover: 'none',
-						colorBorder: 'transparent',
-						colorBgContainer: '#1D1D26',
-					},
-				}}
-			>
-				<Table dataSource={data}>
-					<Column title='Address' dataIndex='address' key='firstName' />
-					<Column
-						title='Bet Type'
-						dataIndex='betType'
-						key='betType'
-						render={(betType: BetType, record: DataType) => {
-							if (betType === 'rise')
-								return <span className='text-chartGreen text-lg'>Rise</span>;
-							else if (betType === 'drop')
-								return <span className='text-chartRed text-lg'>Drop</span>;
-						}}
-					/>
-					<Column title='Amount' dataIndex='value' key='value' />
-
-					<Column
-						title='Time'
-						key='time'
-						render={(time: number, record: DataType) =>
-							// format timestamp in format of Sep 12, 12:35 AM
-							new Date(record.time).toLocaleString()
+			{isLoading ? (
+				<div>Loading...</div>
+			) : (
+				<ConfigProvider
+					theme={{
+						token: {
+							controlOutline: 'none',
+							colorPrimaryHover: 'none',
+							colorBorder: 'transparent',
+							colorBgContainer: '#1D1D26',
+						},
+					}}
+				>
+					<Table
+						dataSource={
+							events
+								?.filter(
+									(event) =>
+										event.eventName === 'AmountStaked' ||
+										event.eventName === 'AmountUnstaked'
+								)
+								?.map((event, index) => {
+									return {
+										key: index,
+										address: event?.data?.user,
+										betType: event?.data?.betType,
+										value: event?.data?.amount,
+									} as DataType;
+								}) || []
 						}
-					/>
-				</Table>
-			</ConfigProvider>
+					>
+						<Column
+							title='Address'
+							dataIndex='address'
+							key='address'
+							render={(address: string, record: DataType) => (
+								<span className='text-lg font-bold text-primary'>
+									{address}
+								</span>
+							)}
+						/>
+						<Column
+							title='Bet Type'
+							dataIndex='betType'
+							key='betType'
+							render={(betType: number, record: DataType) => {
+								if (betType === 1)
+									return <span className='text-lg text-chartGreen'>Rise</span>;
+								else if (betType === 0)
+									return <span className='text-lg text-chartRed'>Drop</span>;
+							}}
+						/>
+						<Column
+							title='Amount'
+							dataIndex='value'
+							key='value'
+							render={(value: number, record: DataType) => (
+								<span className='text-lg font-bold'>{value / 10 ** 18}</span>
+							)}
+						/>
+					</Table>
+				</ConfigProvider>
+			)}
 		</div>
 	);
 };

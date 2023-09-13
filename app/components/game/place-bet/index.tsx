@@ -55,6 +55,7 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 		console.log();
 
 		if (((allowance?.toString() as number) / 10 ** 18)! < parseInt(bet)) {
+			alert('Not Enough Allowance, first add allowance and then place bet');
 			let requiredAllowance = (parseInt(
 				ethers.utils.parseEther(bet).toString()
 			) - allowance?.toString()) as number;
