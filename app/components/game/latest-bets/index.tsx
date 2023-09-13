@@ -49,7 +49,8 @@ const LatestBetsTable = ({ gameId }: Props) => {
 										event.eventName === 'AmountStaked' ||
 										event.eventName === 'AmountUnstaked'
 								)
-								?.map((event, index) => {
+									?.map((event, index) => {
+									if(event?.data?.gameId == gameId)
 									return {
 										key: index,
 										address: event?.data?.user,
