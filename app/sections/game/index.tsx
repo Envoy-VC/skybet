@@ -4,6 +4,7 @@ import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Components
 import {
+	GameDetails,
 	CandlestickChart,
 	PlaceBet,
 	LatestBetsTable,
@@ -40,6 +41,7 @@ const Game = ({ id }: GameProps) => {
 		let won = game?.result === bet?.betType;
 		return (
 			<div className='flex flex-col gap-8 p-4 py-8 '>
+				<GameDetails />
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>
 						{!gameEnded && (

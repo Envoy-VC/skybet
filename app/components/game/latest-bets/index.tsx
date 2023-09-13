@@ -25,6 +25,7 @@ interface Props {
 const LatestBetsTable = ({ gameId }: Props) => {
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
 	const { data: events, isLoading, error } = useContractEvents(contract);
+
 	return (
 		<div className='flex flex-col gap-4'>
 			<span className='text-xl font-medium'>Latest Bets</span>
@@ -42,32 +43,35 @@ const LatestBetsTable = ({ gameId }: Props) => {
 					}}
 				>
 					<Table
-						dataSource={
-							events
-								?.filter(
-									(event) =>
-										event.eventName === 'AmountStaked' ||
-										event.eventName === 'AmountUnstaked'
-								)
-									?.map((event, index) => {
-									if(event?.data?.gameId == gameId)
-									return {
-										key: index,
-										address: event?.data?.user,
-										betType: event?.data?.betType,
-										value: event?.data?.amount,
-									} as DataType;
-								}) || []
-						}
+						dataSource={events
+							?.filter(
+								(event) =>
+									(event.eventName === 'AmountStaked' ||
+										event.eventName === 'AmountUnstaked') &&
+									event?.data?.gameId == gameId
+							)
+							?.map((event, index) => {
+								return {
+									key: index,
+									address: event?.data?.user,
+									betType: event?.data?.betType,
+									value: event?.data?.amount,
+								};
+							})}
 					>
 						<Column
 							title='Address'
 							dataIndex='address'
 							key='address'
 							render={(address: string, record: DataType) => (
-								<span className='text-lg font-bold text-primary'>
-									{address}
-								</span>
+								<>
+									<div className='hidden text-lg font-bold text-primary sm:flex'>
+										{address}
+									</div>
+									<div className='flex font-bold text-primary sm:hidden'>
+										{address.slice(0, 4) + '...' + address.slice(-4)}
+									</div>
+								</>
 							)}
 						/>
 						<Column
