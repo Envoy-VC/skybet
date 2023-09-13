@@ -39,9 +39,16 @@ const Game = ({ id }: GameProps) => {
 		let gameEnded = Math.round(Date.now() / 1000) > game?.endAt?.toString();
 		let resultsDeclared = game?.resultDeclared;
 		let won = game?.result === bet?.betType;
+
 		return (
 			<div className='flex flex-col gap-8 p-4 py-8 '>
-				<GameDetails />
+				<GameDetails
+					gameId={parseInt(id)}
+					totalUpstaked={game?.totalAmountUpstaked?.toString() / 10 ** 18}
+					totalDownstaked={game?.totalAmountDownstaked?.toString() / 10 ** 18}
+					operatorAddress={game?.operator}
+					isEnded={gameEnded}
+				/>
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>
 						{!gameEnded && (
