@@ -80,6 +80,7 @@ const Game = ({ id }: GameProps) => {
 					stakingStartAt={parseInt(game?.stakingStartAt?.toString())}
 					stakingEndAt={parseInt(game?.stakingEndAt?.toString())}
 					token={game?.token}
+					resultsDeclared={resultsDeclared}
 				/>
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>

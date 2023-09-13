@@ -2,7 +2,9 @@ export const formatTimestamp = (timestamp: number) => {
 	const date = new Date(timestamp * 1000);
 	const now = Date.now();
 	const diff = Math.round((date.getTime() - now) / 1000);
-	if (diff < 60) {
+	if (diff < 0) {
+		return 'Ended';
+	} else if (diff < 60) {
 		return diff === 1 ? `Ends in ${diff} second` : `Ends in ${diff} seconds`;
 	} else if (diff < 60 * 60) {
 		return diff === 1

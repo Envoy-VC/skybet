@@ -18,6 +18,7 @@ interface Props {
 	stakingStartAt: number;
 	stakingEndAt: number;
 	token: string;
+	resultsDeclared: boolean;
 }
 
 const GameDetails = ({
@@ -30,6 +31,7 @@ const GameDetails = ({
 	stakingStartAt,
 	stakingEndAt,
 	token,
+	resultsDeclared,
 }: Props) => {
 	const address = useAddress();
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
@@ -81,7 +83,7 @@ const GameDetails = ({
 					</span>
 				</div>
 			</div>
-			{address === operatorAddress && isEnded && (
+			{address === operatorAddress && isEnded && !resultsDeclared && (
 				<Button
 					type='text'
 					className='bg-primary text-xl text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'

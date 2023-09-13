@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 const GameRoom: NextPageWithLayout = () => {
 	const router = useRouter();
 	const { gameId } = router.query;
-	console.log(gameId);
 	return <Game id={gameId?.at(0) as string} />;
 };
 
