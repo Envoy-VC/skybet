@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Spin } from 'antd';
 import { useContract, useContractWrite } from '@thirdweb-dev/react';
 
+import toast from 'react-hot-toast';
+
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Icons
@@ -41,7 +43,7 @@ const ClaimRewards = ({
 		try {
 			await claim({ args: [gameId] });
 		} catch (error: any) {
-			console.log(error?.reason);
+			toast.error(error?.reason);
 		}
 	};
 

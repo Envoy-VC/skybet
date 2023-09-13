@@ -2,6 +2,8 @@ import React from 'react';
 import { CustomInput } from '@/components/common';
 import { Button, Select, ConfigProvider, Spin } from 'antd';
 
+import toast from 'react-hot-toast';
+
 import { ethers } from 'ethers';
 import {
 	useAddress,
@@ -50,16 +52,18 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 
 	const placeBet = async () => {
 		if (parseInt(bet) === 0) {
-			alert('Amount should be greater than zero');
+			toast.error('Amount should be greater than zero');
 			return;
 		}
 		if (parseInt(bet) > parseInt(balance?.displayValue!)) {
-			alert('Not Enough Tokens');
+			toast.error('Not Enough Tokens');
 			return;
 		}
 
 		if (((allowance?.toString() as number) / 10 ** 18)! < parseInt(bet)) {
-			alert('Not Enough Allowance, first add allowance and then place bet');
+			const requestingAllowance = toast.loading(
+				'Not Enough Allowance, requesting tokens...'
+			);
 			let requiredAllowance = (parseInt(
 				ethers.utils.parseEther(bet).toString()
 			) - allowance?.toString()) as number;
@@ -70,8 +74,10 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 						ethers.utils.parseEther((requiredAllowance / 10 ** 18).toString()),
 					],
 				});
-			} catch (error) {
-				console.log(error);
+			} catch (error: any) {
+				toast.error(error?.reason);
+			} finally {
+				toast.dismiss(requestingAllowance);
 			}
 			return;
 		}
@@ -80,8 +86,8 @@ const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
 			await place({
 				args: [gameId, stakeType, ethers.utils.parseEther(bet)],
 			});
-		} catch (error) {
-			console.log(error);
+		} catch (error: any) {
+			toast.error(error?.reason);
 		} finally {
 			setBet('0');
 		}

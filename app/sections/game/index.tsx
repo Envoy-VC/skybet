@@ -62,6 +62,8 @@ const Game = ({ id }: GameProps) => {
 		let resultsDeclared = game?.resultDeclared;
 		let won = game?.result === bet?.betType;
 
+		console.log(game?.token);
+
 		return (
 			<div className='flex flex-col gap-8 p-4 py-8 '>
 				<GameDetails
@@ -73,6 +75,7 @@ const Game = ({ id }: GameProps) => {
 					endAt={parseInt(game?.endAt?.toString())}
 					stakingStartAt={parseInt(game?.stakingStartAt?.toString())}
 					stakingEndAt={parseInt(game?.stakingEndAt?.toString())}
+					token={game?.token}
 				/>
 				<div className='flex flex-col gap-8 lg:flex-row'>
 					<div className='order-2 w-full basis-1/3 lg:order-1'>

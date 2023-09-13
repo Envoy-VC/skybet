@@ -2,6 +2,8 @@ import React from 'react';
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { Polygon, Mumbai } from '@thirdweb-dev/chains';
 
+import { Toaster } from 'react-hot-toast';
+
 import { ConfigProvider, theme } from 'antd';
 
 import { SEO } from '..';
@@ -31,6 +33,7 @@ const Layout = ({ children }: Props) => {
 				<>
 					<SEO />
 					{children}
+					<Toaster position='bottom-left' />
 				</>
 			</ThirdwebProvider>
 		</ConfigProvider>

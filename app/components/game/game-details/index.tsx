@@ -17,6 +17,7 @@ interface Props {
 	endAt: number;
 	stakingStartAt: number;
 	stakingEndAt: number;
+	token: string;
 }
 
 const GameDetails = ({
@@ -28,6 +29,7 @@ const GameDetails = ({
 	endAt,
 	stakingStartAt,
 	stakingEndAt,
+	token,
 }: Props) => {
 	const address = useAddress();
 	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
@@ -50,7 +52,7 @@ const GameDetails = ({
 		<div className='flex flex-col justify-between gap-4 md:flex-row md:items-start'>
 			<div className='flex flex-col gap-4'>
 				<div className='flex flex-row items-center gap-3'>
-					<TokenImage tokenId='ethereum' width={24} />
+					<TokenImage tokenId={token?.at(0) as any} width={24} />
 					<div className='text-3xl font-medium'>Game #{gameId}</div>
 				</div>
 				<div className='flex flex-col'>

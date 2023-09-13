@@ -2,6 +2,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Button, Spin } from 'antd';
 
+import toast from 'react-hot-toast';
+
 import { useContract, useContractWrite } from '@thirdweb-dev/react';
 import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
@@ -38,16 +40,20 @@ const CreateGame = () => {
 
 	const create = async () => {
 		const now = Math.floor(Date.now() / 1000);
+		if (createForm.operatorAddress === '') {
+			toast.error('Operator Address is required');
+			return;
+		}
 		if (createForm.startAt < now) {
-			alert('Start time should be greater than current time');
+			toast.error('Start time should be greater than current time');
 			return;
 		}
 		if (createForm.endAt < createForm.startAt) {
-			alert('End time should be greater than start time');
+			toast.error('End time should be greater than start time');
 			return;
 		}
 		if (createForm.endAt - createForm.startAt > 7 * 24 * 60 * 60) {
-			alert('Game duration should be less than 7 days');
+			toast.error('Game duration should be less than 7 days');
 			return;
 		}
 		if (
@@ -56,7 +62,7 @@ const CreateGame = () => {
 			createForm.stakingEndAt <= createForm.startAt ||
 			createForm.stakingEndAt > createForm.endAt
 		) {
-			alert('Staking start time should be between start and end time');
+			toast.error('Staking start time should be between start and end time');
 			return;
 		}
 		try {
@@ -70,8 +76,8 @@ const CreateGame = () => {
 					createForm.token,
 				],
 			});
-		} catch (error) {
-			console.log(error);
+		} catch (error: any) {
+			toast.error(error?.reason);
 		} finally {
 			setCreateForm({
 				operatorAddress: '',
