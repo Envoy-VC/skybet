@@ -1,4 +1,8 @@
 import React from 'react';
+import { useContract, useContractRead, useAddress } from '@thirdweb-dev/react';
+import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
+
+// Components
 import {
 	CandlestickChart,
 	PlaceBet,
@@ -13,25 +17,50 @@ interface GameProps {
 }
 
 const Game = ({ id }: GameProps) => {
-	let gameEnded = true;
-	let resultsDeclared = true;
-	let won = true;
-	return (
-		<div className='flex flex-col gap-8 p-4 py-8 '>
-			<div className='flex flex-col gap-8 lg:flex-row'>
-				<div className='order-2 w-full basis-1/3 lg:order-1'>
-					{!gameEnded && <PlaceBet />}
-					{gameEnded && !resultsDeclared && <NoResults />}
-					{gameEnded && resultsDeclared && won && <ClaimRewards />}
-					{gameEnded && resultsDeclared && !won && <BestLost />}
-				</div>
-				<div className='order-1 w-full basis-2/3 lg:order-2'>
-					<CandlestickChart />
-				</div>
-			</div>
-			<LatestBetsTable />
-		</div>
+	const address = useAddress();
+	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
+	const { data: game, isLoading } = useContractRead(contract, 'Games', [id]);
+	const { data: bet, isLoading: isBetLoading } = useContractRead(
+		contract,
+		'BetsforGame',
+		[id, address]
 	);
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	} else if (
+		!isLoading &&
+		!!game &&
+		game?.operator?.toString() === '0x0000000000000000000000000000000000000000'
+	) {
+		return <div>no game found</div>;
+	} else {
+		let gameEnded = Math.round(Date.now() / 1000) > game?.endAt?.toString();
+		let resultsDeclared = game?.resultDeclared;
+		let won = game?.result === bet?.betType;
+		return (
+			<div className='flex flex-col gap-8 p-4 py-8 '>
+				<div className='flex flex-col gap-8 lg:flex-row'>
+					<div className='order-2 w-full basis-1/3 lg:order-1'>
+						{!gameEnded && (
+							<PlaceBet
+								gameId={parseInt(id)}
+								BetType={bet?.betType}
+								totalStaked={bet?.totalTokensStaked?.toString() / 10 ** 18}
+							/>
+						)}
+						{gameEnded && !resultsDeclared && <NoResults />}
+						{gameEnded && resultsDeclared && won && <ClaimRewards />}
+						{gameEnded && resultsDeclared && !won && <BestLost />}
+					</div>
+					<div className='order-1 w-full basis-2/3 lg:order-2'>
+						<CandlestickChart />
+					</div>
+				</div>
+				<LatestBetsTable />
+			</div>
+		);
+	}
 };
 
 export default Game;

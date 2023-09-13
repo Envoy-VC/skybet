@@ -2,7 +2,7 @@ import React from 'react';
 import { ConfigProvider, Menu } from 'antd';
 import { useContract, useContractRead } from '@thirdweb-dev/react';
 
-import { SKYBET_ADDRESS } from '@/config';
+import { SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
 
 // Components
 import GameCard from '../game-card';
@@ -43,7 +43,7 @@ const Games = () => {
 		setActiveMenuItem(e.key as MenuItemType);
 	};
 
-	const { contract } = useContract(SKYBET_ADDRESS);
+	const { contract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
 	const { data: totalGames } = useContractRead(contract, 'gameCount');
 
 	return (

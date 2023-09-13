@@ -3,22 +3,24 @@ export const formatTimestamp = (timestamp: number) => {
 	const now = Date.now();
 	const diff = Math.round((date.getTime() - now) / 1000);
 	if (diff < 60) {
-		return diff === 1 ? `${diff} second` : `${diff} seconds`;
+		return diff === 1 ? `Ends in ${diff} second` : `Ends in ${diff} seconds`;
 	} else if (diff < 60 * 60) {
 		return diff === 1
-			? `${Math.round(diff / 60)} minute`
-			: `${Math.round(diff / 60)} minutes`;
+			? `Ends in ${Math.round(diff / 60)} minute`
+			: `Ends in ${Math.round(diff / 60)} minutes`;
 	} else if (diff < 24 * 60 * 60) {
 		return diff === 1
-			? `${Math.round(diff / 3600)} hour`
-			: `${Math.round(diff / 3600)} hours`;
+			? `Ends in ${Math.round(diff / 3600)} hour`
+			: `Ends in ${Math.round(diff / 3600)} hours`;
 	} else if (diff < 7 * 24 * 60 * 60) {
 		return diff === 1
-			? `${Math.round(diff / (24 * 60 * 60))} day`
-			: `${Math.round(diff / (24 * 60 * 60))} days`;
-	} else {
+			? `Ends in ${Math.round(diff / (24 * 60 * 60))} day`
+			: `Ends in ${Math.round(diff / (24 * 60 * 60))} days`;
+	} else if (diff < 30 * 7 * 24 * 60 * 60) {
 		return diff === 1
-			? `${Math.round(diff / (7 * 24 * 60 * 60))} week`
-			: `${Math.round(diff / (7 * 24 * 60 * 60))} weeks`;
+			? `Ends in ${Math.round(diff / (7 * 24 * 60 * 60))} week`
+			: `Ends in ${Math.round(diff / (7 * 24 * 60 * 60))} weeks`;
+	} else {
+		return 'Ended';
 	}
 };

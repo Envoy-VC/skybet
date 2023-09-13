@@ -2,49 +2,123 @@ import React from 'react';
 import { CustomInput } from '@/components/common';
 import { Button, Select, ConfigProvider } from 'antd';
 
+import {
+	useAddress,
+	useBalance,
+	useContract,
+	useContractWrite,
+	useContractRead,
+} from '@thirdweb-dev/react';
+import { TOKEN_ADDRESS, TOKEN_ABI, SKYBET_ADDRESS, SKYBET_ABI } from '@/config';
+
 // Icons
 import { PiAirplaneDuotone } from 'react-icons/pi';
+import { ethers } from 'ethers';
 
 // Types
 export type BetType = 'rise' | 'drop';
 
-const PlaceBet = () => {
+interface Props {
+	gameId: number;
+	BetType: number;
+	totalStaked: number;
+}
+
+const PlaceBet = ({ BetType, totalStaked, gameId }: Props) => {
+	const address = useAddress();
+	const { data: balance } = useBalance(TOKEN_ADDRESS);
+	const { contract: tokenContract } = useContract(TOKEN_ADDRESS, TOKEN_ABI);
+	const { contract: skybetContract } = useContract(SKYBET_ADDRESS, SKYBET_ABI);
+	const { data: allowance } = useContractRead(tokenContract, 'allowance', [
+		address!,
+		SKYBET_ADDRESS,
+	]);
+	const { mutateAsync: approve } = useContractWrite(tokenContract, 'approve');
+	const { mutateAsync: place } = useContractWrite(skybetContract, 'addStake');
+
+	const [bet, setBet] = React.useState<string>('0');
 	const [betType, setBetType] = React.useState<BetType>('rise');
 
 	const handleChange = (value: string) => {
 		setBetType(value as BetType);
 	};
+
+	const placeBet = async () => {
+		if (parseInt(bet) === 0) {
+			alert('Amount should be greater than zero');
+			return;
+		}
+		if (parseInt(bet) > parseInt(balance?.displayValue!)) {
+			alert('Not Enough Tokens');
+			return;
+		}
+		console.log();
+
+		if (((allowance?.toString() as number) / 10 ** 18)! < parseInt(bet)) {
+			let requiredAllowance = (parseInt(
+				ethers.utils.parseEther(bet).toString()
+			) - allowance?.toString()) as number;
+			try {
+				await approve({
+					args: [
+						SKYBET_ADDRESS,
+						ethers.utils.parseEther((requiredAllowance / 10 ** 18).toString()),
+					],
+				});
+			} catch (error) {
+				console.log(error);
+			}
+			return;
+		}
+		try {
+			const stakeType = betType === 'rise' ? 1 : 0;
+			await place({
+				args: [gameId, stakeType, ethers.utils.parseEther(bet)],
+			});
+		} catch (error) {
+			console.log(error);
+		}
+		setBet('0');
+	};
 	return (
 		<div className='flex h-full flex-col gap-4 rounded-xl bg-[#1D1D26] p-5 py-6'>
 			<span className='mb-4 text-2xl'>Place Bet</span>
 			<div className='flex flex-col gap-3'>
-				<div className='text-textSecondary flex flex-row justify-between text-xs font-medium'>
+				<div className='flex flex-row justify-between text-xs font-medium text-textSecondary'>
 					<span>Amount</span>
-					<span>245.36</span>
+					<span>{balance?.displayValue}</span>
 				</div>
 				<CustomInput
 					size='large'
-					prefix={<PiAirplaneDuotone className='text-chartBlue text-2xl' />}
+					type='number'
+					prefix={<PiAirplaneDuotone className='text-2xl text-chartBlue' />}
 					suffix={
 						<div className='flex flex-row items-center gap-2'>
 							<Button
 								type='text'
 								className='bg-primary font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
+								onClick={() =>
+									setBet((prev) => (parseInt(prev) * 2).toString())
+								}
 							>
 								2X
 							</Button>
 							<Button
 								type='text'
 								className='bg-primary font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
+								onClick={() => setBet(balance?.displayValue || '0')}
 							>
 								MAX
 							</Button>
 						</div>
 					}
+					className='flex flex-row items-center gap-2'
+					value={bet}
+					onChange={(e) => setBet(e.target.value)}
 				/>
 			</div>
 			<div className='flex flex-col gap-2'>
-				<div className='text-textSecondary flex flex-row justify-between text-xs font-medium'>
+				<div className='flex flex-row justify-between text-xs font-medium text-textSecondary'>
 					<span>Bet type</span>
 				</div>
 				<ConfigProvider
@@ -73,15 +147,22 @@ const PlaceBet = () => {
 				type='text'
 				size='large'
 				className='bg-primary font-medium text-white hover:!bg-[rgba(108,97,208,0.75)] hover:!text-white'
+				onClick={placeBet}
 			>
 				Place bet
 			</Button>
 			<div className='mt-6 rounded-xl bg-[#1a1e2e] p-8 py-6'>
 				<div className='flex flex-col gap-6'>
-					<span className='text-textSecondary text-sm'>Total Staked</span>
+					<span className='text-sm text-textSecondary'>Total Staked</span>
 					<div className='flex flex-row items-center gap-4'>
-						<PiAirplaneDuotone className='text-chartBlue text-5xl' />
-						<span className='text-chartGreen text-5xl'>6254</span>
+						<PiAirplaneDuotone className='text-5xl text-chartBlue' />
+						<span
+							className={`text-5xl ${
+								BetType === 1 ? 'text-chartGreen' : 'text-chartRed'
+							}`}
+						>
+							{totalStaked}
+						</span>
 					</div>
 				</div>
 			</div>
