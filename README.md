@@ -110,7 +110,7 @@ https://youtu.be/jEo37OGORTA
 
 - [thirdweb](https://thirdweb.com/) - Wallet Connection + Smart Contracts
 - [antd](https://ant.design/) - UI Design
-- [Phat Bricks](https://bricks.phala.network/) - Lens API Oracle
+- [Phat Bricks](https://bricks.phala.network/) - Cryptocurrency Price Oracle
 - [Next.js](https://nextjs.org/) + [TypeScript](https://www.typescriptlang.org/) - Front-end
 - [Binance APIs](https://github.com/binance/binance-spot-api-docs) - WebSockets for Live Price Data
 
