@@ -5,6 +5,10 @@ Skybet is a cryptocurrency betting game powered by Phala Phat functions. With Sk
 Testnet App - https://skybet-testnet.vercel.app/
 Mainnet App - https://skybet-mainnet.vercel.app/
 
+You can Mint `$SKY` Tokens for free on the testnet by calling the `mint` function in the Contract Explorer page [here](https://mumbai.polygonscan.com/address/0xc7449dc99168acc5b4701a13f14b85d280bd9811#writeContract)
+
+https://mumbai.polygonscan.com/address/0xc7449dc99168acc5b4701a13f14b85d280bd9811#writeContract
+
 ---
 
 ## Features ✨
